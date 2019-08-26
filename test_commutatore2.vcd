@@ -1,0 +1,40 @@
+$date
+	Mon Aug 26 19:29:11 2019
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module test_commutatore2 $end
+$var wire 32 ! out [31:0] $end
+$var reg 1 " alpha $end
+$var reg 32 # x1 [31:0] $end
+$var reg 32 $ x2 [31:0] $end
+$scope module K $end
+$var wire 1 " alpha $end
+$var wire 32 % x1 [31:0] $end
+$var wire 32 & x2 [31:0] $end
+$var wire 32 ' out [31:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+bx '
+b10100 &
+b1010 %
+b10100 $
+b1010 #
+0"
+bx !
+$end
+#2
+b1010 !
+b1010 '
+1"
+#4
+b10100 !
+b10100 '
+#12
