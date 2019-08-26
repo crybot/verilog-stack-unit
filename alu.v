@@ -1,4 +1,8 @@
-module ALU (output reg [N-1:0]z, input [2:0]alpha, input [N-1:0]x, input [N-1:0]y);
+/*
+* ALU con operandi a N bit. Implementa le operazioni di somma, sottrazione, incremento, decremento e divisione.
+* Fornisce in output, oltre al risultato, anche un bit di segno.
+*/
+module ALU(output reg [N-1:0]z, output reg segno, input [N-1:0]x, input [N-1:0]y, input [2:0]alpha);
   parameter N = 32;
   parameter RITARDO = 10;
 
@@ -14,5 +18,6 @@ module ALU (output reg [N-1:0]z, input [2:0]alpha, input [N-1:0]x, input [N-1:0]
       5: z = y - 1;
       6: z = x / y;
     endcase
+    segno = z[N-1]; // bit di segno
   end
 endmodule

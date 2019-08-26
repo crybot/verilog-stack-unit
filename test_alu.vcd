@@ -1,0 +1,78 @@
+$date
+	Mon Aug 26 23:40:14 2019
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module test_alu $end
+$var wire 32 ! z [31:0] $end
+$var wire 1 " segno $end
+$var reg 3 # alpha [2:0] $end
+$var reg 32 $ x [31:0] $end
+$var reg 32 % y [31:0] $end
+$scope module alu $end
+$var wire 3 & alpha [2:0] $end
+$var wire 32 ' x [31:0] $end
+$var wire 32 ( y [31:0] $end
+$var reg 1 " segno $end
+$var reg 32 ) z [31:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+bx )
+b0 (
+b0 '
+b0 &
+b0 %
+b0 $
+b0 #
+x"
+bx !
+$end
+#10
+0"
+b0 !
+b0 )
+#11
+b101 %
+b101 (
+b1010 $
+b1010 '
+#21
+b1111 !
+b1111 )
+#22
+b1 #
+b1 &
+b100 %
+b100 (
+b10100 $
+b10100 '
+#32
+b10000 !
+b10000 )
+#33
+b1010 %
+b1010 (
+b1 $
+b1 '
+#43
+1"
+b11111111111111111111111111110111 !
+b11111111111111111111111111110111 )
+#44
+b11 #
+b11 &
+#54
+0"
+b0 !
+b0 )
+#55
+b110 #
+b110 &
+#77
