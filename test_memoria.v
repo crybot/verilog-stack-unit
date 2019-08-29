@@ -7,12 +7,10 @@ module test_memoria();
   reg [9:0]ind1;
   reg [9:0]ind2;
 
-  integer i;
-
   always
   begin
     if (clock == 0)
-      #15 clock = 1;
+      #40 clock = 1;
     else 
       #1 clock = 0;
   end
@@ -23,11 +21,14 @@ module test_memoria();
   begin
     $dumpfile("test_memoria.vcd");
     $dumpvars;
+    beta = 0;
+    #4;
+    beta = 1;
     x <= 42;
     ind1 <= 0;
     ind2 <= 0;
     beta <= 1;
-    #16;
+    #100;
     x <= 128;
     ind2 <= 1023;
     beta <= 1;

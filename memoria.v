@@ -27,13 +27,14 @@ module MEMORIA(out1, out2, in, ind1, ind2, clock, beta);
       mem[i] = 0;
   end
 
-  always @(negedge clock && beta)
+  always @(negedge clock)
   begin
-    mem[ind1] = in;
+    if(beta)
+      mem[ind1] = in;
   end
 
   assign #RITARDO out1 = mem[ind1];
   assign #RITARDO out2 = mem[ind2];
-  
+
 endmodule
 
