@@ -1,4 +1,17 @@
-module PO(output [ALU_SIZE-1:0]out,
+module PO(
+  // output della rete
+  output wire [ALU_SIZE-1:0]dataout_out,
+  // variabili di condizionamento
+  output wire rdy,
+  output wire ack,
+  output wire [2:0]op_out,
+  output wire eq_out, // eq(I, N)
+  output wire ge, // segno(HD - N)
+  output wire hd0,
+  output wire or_hd,
+  output wire or10_hd,
+
+  // clock
   input clock, 
   // alpha
   input alpha_k1, 
@@ -21,11 +34,14 @@ module PO(output [ALU_SIZE-1:0]out,
   input beta_esito,
   input beta_datain,
   input beta_dataout,
+  input beta_rdyin,
+  input beta_ackout,
   input beta_mem,
   // altri input
   input [ALU_SIZE-1:0]datain_val,
-  input [9:0]n_val
-
+  input [9:0]n_val,
+  input [2:0]op_in,
+  input rdy_in
 );
 
   parameter ALU_SIZE = 32;
@@ -45,7 +61,6 @@ module PO(output [ALU_SIZE-1:0]out,
   wire [K_I_SIZE-1:0]i_out;
   wire [K_ESITO_SIZE-1:0]esito_out;
   wire [ALU_SIZE-1:0]datain_out;
-  wire [ALU_SIZE-1:0]dataout_out;
   wire [9:0]n_out;
 
   // commutatori
@@ -61,7 +76,7 @@ module PO(output [ALU_SIZE-1:0]out,
   wire [10:0]k_mem1_out, k_mem2_out;
 
   // alu
-  wire [ALU_SIZE-1:0]alu2_out, alu3_out, alu4_out;
+  wire [ALU_SIZE-1:0]alu1_out, alu2_out, alu3_out, alu4_out;
   wire alu2_segno, alu3_segno, alu4_segno;
 
   // memoria
@@ -75,9 +90,10 @@ module PO(output [ALU_SIZE-1:0]out,
   REGISTRO#(10) ind(ind_out, k_ind_out, clock, beta_ind);
   REGISTRO#(10) i(i_out, k_i_out, clock, beta_i);
   REGISTRO#(3) esito(esito_out, k_esito_out, clock, beta_esito);
-  REGISTRO#(ALU_SIZE) datain(datain_out, datain_val, clock, beta_datain); // TODO: beta sempre = 1?
+  REGISTRO#(ALU_SIZE) datain(datain_out, datain_val, clock, 1'b1); // TODO: beta sempre = 1?
   REGISTRO#(ALU_SIZE) dataout(dataout_out, k_dataout_out, clock, beta_dataout);
-  REGISTRO#(10) n(n_out, n_val, clock, beta_n); //TODO: beta sempre = 1?
+  REGISTRO#(10) n(n_out, n_val, clock, 1'b1); //TODO: beta sempre = 1?
+  REGISTRO#(3) op(op_out, op_in, clock, 1'b1); //TODO: beta sempre = 1?
 
   // commutatori
   COMMUTATORE2#(K1_SIZE) k1(k1_out, mem_out1, dataout_out, alpha_k1);
@@ -94,14 +110,27 @@ module PO(output [ALU_SIZE-1:0]out,
   COMMUTATORE2#(11) k_mem2(k_mem2_out, alu4_out, ind_out, alpha_k_mem2);
 
   // alu
+  ALU#(ALU_SIZE) alu1(alu1_out, ge, hd_out, n_out, 1); // calcola segno(HD - N) === ge(HD, N)
   ALU#(ALU_SIZE) alu2(alu2_out, alu2_segno, k1_out, k2_out, alpha_alu2);
   ALU#(ALU_SIZE) alu3(alu3_out, alu3_segno, k3_out, 1, alpha_alu3);
   ALU#(ALU_SIZE) alu4(alu4_out, alu4_segno, k4_out, k5_out, alpha_alu4);
 
+  // comparatore
+  CONFRONTATORE_N#(K_I_SIZE) eq(eq_out, i_out, n_out);
+
   // memoria
   MEMORIA#(1024, 32) mem(mem_out1, mem_out2, datain_out, k_mem1_out, k_mem2_out, clock, beta_mem);
+
+  // interfacce a transizione di livello
+  TRANSIZIONE_LIVELLO ackout(ack, 1'b0, clock, beta_ackout); // in=0 trasforma ackout in un contatore modulo 2
+  TRANSIZIONE_LIVELLO rdyin(rdy, rdy_in, clock, beta_rdyin);
   /****************************/
 
-  assign out = dataout_out;
+
+  /*****CALCOLO VARIABILI DI CONDIZIONAMENTO******/
+  assign hd0 = hd_out[10]; // bit piu` significativo di HD
+  assign or_hd = | hd_out; // or unario di HD
+  assign or10_hd = | hd_out[10:1]; // or unario dei 10 bit piu` significativi di HD
+  /***************************************/
 
 endmodule

@@ -27,7 +27,7 @@ module MEMORIA(out1, out2, in, ind1, ind2, clock, beta);
       mem[i] = 0;
   end
 
-  always @(negedge clock)
+  always @(posedge clock)
   begin
     if(beta)
       mem[ind1] = in;
