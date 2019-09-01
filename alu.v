@@ -18,6 +18,6 @@ module ALU(output reg [N-1:0]z, output reg segno, input [N-1:0]x, input [N-1:0]y
       5: z = y - 1;
       6: z = x / y;
     endcase
-    segno = z[N-1]; // bit di segno
+    segno = ~z[N-1]; // bit di segno negato (i.e. 0 se il risultato e` negativo, 1 se e` positivo)
   end
 endmodule

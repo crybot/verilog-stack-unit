@@ -1,6 +1,7 @@
 module PO(
   // output della rete
   output wire [ALU_SIZE-1:0]dataout_out,
+  output wire esito_out,
   // variabili di condizionamento
   output wire rdy,
   output wire ack,
@@ -59,7 +60,6 @@ module PO(
   wire [10:0]hd_out;
   wire [K_IND_SIZE-1:0]ind_out;
   wire [K_I_SIZE-1:0]i_out;
-  wire [K_ESITO_SIZE-1:0]esito_out;
   wire [ALU_SIZE-1:0]datain_out;
   wire [9:0]n_out;
 
@@ -129,8 +129,8 @@ module PO(
 
   /*****CALCOLO VARIABILI DI CONDIZIONAMENTO******/
   assign hd0 = hd_out[10]; // bit piu` significativo di HD
-  assign or_hd = | hd_out; // or unario di HD
-  assign or10_hd = | hd_out[10:1]; // or unario dei 10 bit piu` significativi di HD
+  assign #2 or_hd = | hd_out; // or unario di HD
+  assign #2 or10_hd = | hd_out[10:1]; // or unario dei 10 bit piu` significativi di HD
   /***************************************/
 
 endmodule

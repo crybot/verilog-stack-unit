@@ -23,7 +23,7 @@ module CONFRONTATORE_N(output reg out, input [N-1:0]x1, input [N-1:0]x2);
     end
   endgenerate
 
-  always
+  always @(x1 or x2)
   begin
     #RITARDO; // simula il ritardo delle porte AND in serie
     out = 1;
