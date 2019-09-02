@@ -1,3 +1,7 @@
+/**
+* Interfaccia a transizione di livello di ingresso/uscita.
+* se `in` = 1'b0 costante, l'interfaccia e` di uscita: si comporta come un contatore modulo 2.
+*/
 module TRANSIZIONE_LIVELLO(output out, input in, input clock, input beta);
 
   wire s_out;

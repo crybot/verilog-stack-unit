@@ -86,8 +86,13 @@ module PO(
 
   /******* COMPONENTI *********/
   // registri
-  REGISTRO#(11) hd(hd_out, alu3_out, clock, beta_hd);
-  REGISTRO#(10) ind(ind_out, k_ind_out, clock, beta_ind);
+  REGISTRO#(11) hd(hd_out, alu3_out, clock, beta_hd); // prima posizione libera dello stack
+  REGISTRO#(10) ind(ind_out, k_ind_out, clock, beta_ind); // registro di indirizzamento interno 
+  // 
+  // registro contatore interno usato per determinare la fine
+  // del ciclo per il calcolo della media. Quando i = n
+  // il ciclo termina
+  // usato per iterare lo stack
   REGISTRO#(10) i(i_out, k_i_out, clock, beta_i);
   REGISTRO#(3) esito(esito_out, k_esito_out, clock, beta_esito);
   REGISTRO#(ALU_SIZE) datain(datain_out, datain_val, clock, 1'b1); // TODO: beta sempre = 1?

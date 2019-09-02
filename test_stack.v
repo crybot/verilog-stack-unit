@@ -11,6 +11,8 @@ module test_stack();
   wire signed [31:0]dataout;
   wire esito;
   wire ack;
+  
+  integer i;
 
   STACK stack(dataout, esito, ack, rdy_in, op, datain, n, clock);
   
@@ -35,60 +37,80 @@ module test_stack();
     op <= 0;
     
     //POP
-    #100;
+    #102;
     rdy_in <= 0;
     op <= 1;
 
     //PUSH (111)
-    #100;
+    #102;
     datain <= 111;
     rdy_in <= 1;
     op <= 0;
 
     //POP
-    #100;
+    #102;
     rdy_in <= 0;
     op <= 1;
 
     //PUSH (500)
-    #100;
+    #102;
     datain <= 500;
     op <= 0;
     rdy_in <= 1;
 
     //PUSH (750)
-    #100;
+    #102;
     datain <= 750;
     op <= 0;
     rdy_in <= 0;
 
     //SOMMA (750 + 500)
-    #100;
+    #102;
     op <= 2;
     rdy_in <= 1;
 
     //SOTTRAZIONE (750 - 500)
-    #100;
+    #102;
     op <= 3;
     rdy_in <= 0;
 
     //PUSH (1200)
-    #100;
+    #102;
     datain <= 1200;
     op <= 0;
     rdy_in <= 1;
 
     //PUSH (300)
-    #100;
+    #102;
     datain <= 300;
     op <= 0;
     rdy_in <= 0;
 
     //MEDIA: (1200 + 300 + 750 + 500)/4
-    #100;
+    #102;
     op <= 4;
     n <= 4;
     rdy_in <= 1;
+
+    // CLEAR stack
+    for (i=0; i<1024; i++)
+    begin
+      //POP
+      #102;
+      op <= 1;
+      rdy_in <= ~rdy_in;
+    end
+
+    // FILL stack
+    for (i=0; i<=1024; i++)
+    begin
+      //PUSH (i)
+      #102;
+      datain <= i;
+      op <= 0;
+      rdy_in <= ~rdy_in;
+    end
+
 
     #1000;
     $finish;

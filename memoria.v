@@ -3,7 +3,6 @@
 * - 1 porta in lettura/scrittura
 * - 1 porta in lettura;
 * Il ritardo di accesso in memoria e` parametrizzabile, di default e` uguale a 8tp.
-* TODO: aggiornare documento di derivazione formale: la memoria e` a doppia porta, non tripla e va aggiunto il segnale di clock, beta, il valore di ingresso e rimuovere alpha.
 */
 module MEMORIA(out1, out2, in, ind1, ind2, clock, beta);
 
